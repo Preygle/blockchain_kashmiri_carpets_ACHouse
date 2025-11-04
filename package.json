@@ -1,0 +1,34 @@
+{
+  "name": "kashmir-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local demo: Kashmiri Carpets Marketplace & Auction on dual hardhat networks",
+  "scripts": {
+    "postinstall": "cd frontend && npm install || true && cd ../verifier && npm install || true",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "clean": "rimraf cache artifacts",
+    "node:l1": "hardhat node --port 8545",
+    "node:l2": "cross-env HARDHAT_CHAIN_ID=31338 hardhat node --port 9545 --hostname 127.0.0.1",
+    "deploy:l1": "hardhat run --network l1 scripts/deploy-l1.js",
+    "deploy:l2": "hardhat run --network l2 scripts/deploy-l2.js",
+    "relay": "node scripts/relay-watch-l2.js",
+    "faucet": "hardhat run --network l1 scripts/faucet.js",
+    "seed": "hardhat run --network l1 scripts/seed.js"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.1.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.9",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.0",
+    "hardhat": "^2.22.9",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {}
+}

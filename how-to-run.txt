@@ -1,0 +1,14 @@
+(T1): npx hardhat node --network l1
+
+(T2): $env:HARDHAT_CHAIN_ID = 31338; npx hardhat node --port 9545
+
+(T3): node scripts/deploy-both.js
+node scripts/seed-l1-l2.js
+
+(T4): node scripts/relay-watch-l2.js
+
+(T5):   cd frontend
+        npm run dev
+
+(T6):   cd verifier
+        npm start
