@@ -1,0 +1,92 @@
+**Project:** Create a complete frontend for a "Kashmiri Carpets Marketplace & Auction" blockchain application.
+
+**Objective:**
+Build a fully functional, visually appealing, and responsive React single-page application (SPA) that interacts with a local two-layer blockchain setup (L1 and L2). The application will serve as the user interface for a demo project involving NFT minting, sales, and auctions of Kashmiri carpets.
+
+**Core Technologies:**
+*   **Framework:** React with Vite (TypeScript).
+*   **Styling:** Tailwind CSS for a modern, utility-first approach. Make it look clean and professional.
+*   **Blockchain Interaction:** `ethers.js` (v6).
+*   **Routing:** `react-router-dom`.
+
+**Key Features & Pages:**
+
+1.  **Global Header/Navbar:**
+    *   "Connect Wallet" button (using MetaMask).
+    *   Display connected user's address.
+    *   Display current network name (L1 or L2).
+    *   Display user's FAKEBTC balance on the current network.
+    *   Navigation links: Home, Mint Carpet, My Profile, Faucet.
+
+2.  **Wallet & Network Management:**
+    *   The app must prompt the user to connect their MetaMask wallet.
+    *   It should be aware of two networks:
+        *   **L1 (Marketplace):** Chain ID `31337`, RPC URL `http://127.0.0.1:8545/`
+        *   **L2 (Auction):** Chain ID `31338`, RPC URL `http://127.0.0.1:9545/`
+    *   The UI should clearly indicate which network is currently active and guide the user to switch networks when an action requires it (e.g., "Please switch to L2 to place a bid").
+
+3.  **User Registration:**
+    *   Before performing actions like selling or buying, a user must be registered.
+    *   Create a "My Profile" page where a user can see their registration status on both L1 and L2.
+    *   If not registered, a "Register" button should be available to call the `register` function on the `UserRegistry` contract for the current network.
+
+4.  **Home Page (Carpet Gallery):**
+    *   Display all minted carpet NFTs in a grid layout.
+    *   For each carpet, display:
+        *   Image (from `/public/images/img{tokenId}.jpg`).
+        *   Name and Description (from metadata).
+        *   Current status: "For Sale (L1)", "In Auction (L2)", or "Owned".
+        *   Price if for sale, or current highest bid if in auction.
+    *   Clicking a carpet navigates to its detail page.
+
+5.  **Carpet Detail Page:**
+    *   Show larger image and full details from metadata.
+    *   **If for sale on L1 Marketplace:** Show price and a "Buy Now" button. This button should trigger a transaction on L1 to call `Marketplace.buyCarpet`.
+    *   **If in auction on L2 AuctionHouse:** Show current highest bid, auction end time, and a form to "Place Bid". This should trigger a transaction on L2 to call `AuctionHouse.placeBid`.
+    *   **If owned by the current user (and not for sale/auction):** Provide buttons to "Sell on Marketplace (L1)" or "Start Auction (L2)". These should open modals to input a price or auction duration.
+
+6.  **Mint Carpet Page:**
+    *   A simple form for a registered seller to mint a new Carpet NFT.
+    *   Since metadata is pre-defined, the form only needs a button "Mint New Carpet".
+    *   This action calls the `mint` function on the `CarpetNFT` contract on L1. The `tokenURI` should be constructed dynamically, e.g., `http://localhost:3000/metadata/carpet{newTokenId}.json`.
+
+7.  **FAKEBTC Faucet Page:**
+    *   A simple page with a button "Get 100 FAKEBTC".
+    *   This button calls the `faucet` function on the `FAKEBTC` contract on the currently connected network (works on both L1 and L2).
+
+**Blockchain Interaction Details:**
+*   **Contract ABIs:** All necessary ABIs (`CarpetNFT.json`, `FAKEBTC.json`, `Marketplace.json`, `Bridge.json`, `UserRegistry.json`, `AuctionHouse.json`) are located in the `src/abis/` directory. Import them directly.
+*   **Contract Addresses:** A file named `deploy-addresses.json` will be present in the `public` folder of the frontend. Fetch this file to get the deployed contract addresses for both L1 and L2.
+*   **Providers & Signers:** Use `new ethers.BrowserProvider(window.ethereum)` to interact with MetaMask. Get the signer to send transactions.
+*   **State Management:** Use React hooks (`useState`, `useEffect`, `useContext`) for managing state. For shared state like user address, balance, and provider, a global context (`AppContext`) is recommended.
+
+**Suggested File Structure (`frontend/src`):**
+```
+/src
+├── abis/
+│   ├── AuctionHouse.json
+│   ├── ... (other ABIs)
+├── components/
+│   ├── Header.tsx
+│   ├── CarpetCard.tsx
+│   └── ... (other reusable components)
+├── contexts/
+│   └── Web3Context.tsx
+├── hooks/
+│   ├── useContracts.ts
+│   └── useWeb3.ts
+├── pages/
+│   ├── Home.tsx
+│   ├── CarpetDetail.tsx
+│   ├── Mint.tsx
+│   ├── Profile.tsx
+│   └── Faucet.tsx
+├── App.tsx
+└── main.tsx
+```
+
+**Final Instructions:**
+*   Ensure the UI is clean, modern, and provides good feedback (loading spinners for transactions, success/error notifications).
+*   Handle potential errors gracefully (e.g., user rejects transaction, transaction fails).
+*   The code should be well-structured, commented where necessary, and use TypeScript effectively.
+*   Start by creating a new React project using `npm create vite@latest frontend -- --template react-ts`.
