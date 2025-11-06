@@ -1,0 +1,549 @@
+﻿THIRDWEB DOCUMENTATION
+
+
+Platform for building the next generation of internet products
+
+
+Source: https://portal.thirdweb.com/
+
+
+===================
+
+
+AI SECTION
+
+
+1. Blockchain LLM
+   - Integrate the most advanced blockchain model into your applications
+   - Link: https://portal.thirdweb.com/ai/chat
+
+
+2. MCP
+   - For agents and humans. Use the thirdweb API with natural language
+   - Link: https://portal.thirdweb.com/ai/mcp
+
+
+3. LLMs.txt
+   - Inject the thirdweb API reference in your prompts
+   - Link: https://portal.thirdweb.com/ai/llm-txt
+
+
+===================
+
+
+DOCUMENTATION SECTION
+
+
+1. Wallets
+   - Create and manage crypto wallets
+   - Link: https://portal.thirdweb.com/wallets
+
+
+2. Payments
+   - Create onchain payments and sell products
+   - Link: https://portal.thirdweb.com/payments
+
+
+3. Bridge
+   - Bridge, swap, and onramp tokens on any chain
+   - Link: https://portal.thirdweb.com/bridge
+
+
+4. Transactions
+   - Reliable transactions and monitoring
+   - Link: https://portal.thirdweb.com/transactions
+
+
+5. Contracts
+   - Create, deploy, and manage smart contracts
+   - Link: https://portal.thirdweb.com/contracts
+
+
+6. Insight
+   - Blockchain data queries and transformations
+   - Link: https://portal.thirdweb.com/insight
+
+
+7. Vault
+   - Non-custodial key management service
+   - Link: https://portal.thirdweb.com/vault
+
+
+===================
+
+
+CLIENT LIBRARIES
+
+
+1. TypeScript
+   - View docs: https://portal.thirdweb.com/references/typescript/v5
+
+
+2. React
+   - View docs: https://portal.thirdweb.com/references/typescript/v5
+
+
+3. React Native
+   - View docs: https://portal.thirdweb.com/references/typescript/v5
+
+
+4. DotNet (.NET)
+   - View docs: https://portal.thirdweb.com/dotnet
+
+
+5. Unity
+   - View docs: https://portal.thirdweb.com/unity
+
+
+6. Unreal Engine
+   - View docs: https://portal.thirdweb.com/unreal-engine
+
+
+===================
+
+
+BACKEND APIs
+
+
+1. HTTP API
+   - View docs: https://portal.thirdweb.com/reference
+
+
+2. Engine
+   - View docs: https://engine.thirdweb.com/reference
+
+
+3. Insight
+   - View docs: https://insight.thirdweb.com/reference
+
+
+4. Payments & Bridge
+   - View docs: https://bridge.thirdweb.com/reference
+
+
+5. Bundler
+   - View docs: https://portal.thirdweb.com/bundler
+
+
+6. Webhooks
+   - View docs: https://portal.thirdweb.com/webhooks
+
+
+===================
+
+
+ADDITIONAL RESOURCES
+
+
+- Playground: https://playground.thirdweb.com/
+- Main Portal: https://portal.thirdweb.com/
+
+
+===================
+
+
+
+
+DETAILED DOCUMENTATION CONTENT
+
+
+===================
+WALLETS DOCUMENTATION
+===================
+
+
+Get Started
+Create wallets for your users with flexible authentication options. Choose from email/phone verification, social OAuth, passkeys, or external wallet connections.
+
+
+API Authentication
+For email, phone, passkey, or SIWE authentication, a two-step process is used:
+- Initiate authentication to get a challenge
+- Complete authentication with the challenge response
+
+
+For guest or custom (jwt/auth-payload) authentication, you can skip the first step and directly use the /v1/auth/complete endpoint with the required parameters.
+
+
+Initiate Authentication
+Start authentication with email, phone, passkey, or SIWE
+Request: POST /v1/auth/initiate
+Response: {"method":"sms","success":true}
+
+
+Complete Authentication
+Verify and complete the authentication process
+Request: POST /v1/auth/complete
+Response: {"isNewUser":true,"token":"...","type":"email","userId":"user_123","walletAddress":"0x742d35Cc6634C0532925a3b8D43C67B8c8B3E9C6"}
+
+
+Social Authentication
+Single Step Flow - OAuth is done in a single step using a dedicated endpoint.
+Request: GET /v1/auth/social
+Response: Redirects to OAuth provider for authentication
+
+
+Get Wallet Information
+Retrieve authenticated user's wallet details
+Request: GET /v1/wallets/me
+Response: {"result":{"profiles":[...],"userId":"string","address":"string","createdAt":"string"}}
+
+
+Going further:
+- Authentication Methods
+- Server wallets
+- Implement Sign In with Ethereum
+- External Wallets (e.g. MetaMask, WalletConnect, Coinbase Wallet, etc.)
+
+
+===================
+PAYMENTS DOCUMENTATION
+===================
+
+
+Get Started
+thirdweb Payments allow developers to create advanced payment flows to monetize their apps through product sales, peer to peer payments, token sales, and more.
+
+
+The quickest way to setup payments in your React app is with the BuyWidget, CheckoutWidget, and TransactionWidget components.
+
+
+Live Playground
+Payment Widgets Playground - Try out the Payment Widgets in our live playground
+
+
+Installation
+Install the thirdweb SDK in your React project:
+npm i thirdweb
+
+
+Create a Client
+First, create a client file (e.g., thirdwebClient.ts) for reuse throughout your app:
+import { createThirdwebClient } from "thirdweb";
+export const client = createThirdwebClient({
+  clientId: "YOUR_CLIENT_ID",
+});
+
+
+Setup the Provider
+Wrap your application with the ThirdwebProvider:
+import { ThirdwebProvider } from "thirdweb/react";
+function App() {
+  return (
+    <ThirdwebProvider>
+      <YourApp />
+    </ThirdwebProvider>
+  );
+}
+
+
+Buy Widget
+Use the BuyWidget to let users purchase tokens:
+import { BuyWidget } from "thirdweb/react";
+import { base } from "thirdweb/chains";
+function PaymentComponent() {
+  return (
+    <BuyWidget
+      client={client}
+      chain={base}
+      amount="10"
+      tokenAddress="0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+    />
+  );
+}
+
+
+Going further:
+- Send a Payment
+- Webhooks
+- Custom Data
+
+
+===================
+BRIDGE DOCUMENTATION
+===================
+
+
+Get Started
+thirdweb Bridge allows developers to easily bridge and swap tokens between chains and wallets.
+
+
+The quickest way to setup Bridge in your React app is with the SwapWidget component.
+
+
+Live Playground
+Swap Widget Playground - Try out the Swap Widget in our live playground
+
+
+Installation
+Install the thirdweb SDK in your React project:
+npm i thirdweb
+
+
+Create a Client
+First, create a client file for reuse throughout your app:
+import { createThirdwebClient } from "thirdweb";
+export const client = createThirdwebClient({
+  clientId: "YOUR_CLIENT_ID",
+});
+
+
+Setup the Provider
+Wrap your application with the `ThirdwebProvider`
+import { ThirdwebProvider } from "thirdweb/react";
+function App() {
+  return (
+    <ThirdwebProvider>
+      <YourApp />
+    </ThirdwebProvider>
+  );
+}
+
+
+Add Swap Widget
+Use the SwapWidget to let users swap tokens
+import { SwapWidget } from "thirdweb/react";
+function Example() {
+  return <SwapWidget client={client} />;
+}
+
+
+===================
+TRANSACTIONS DOCUMENTATION
+===================
+
+
+Get Started
+Send, monitor, and manage transactions. Send transactions from user or server wallets, sponsor gas, monitor transaction status, and more.
+
+
+Send raw transactions
+Send a raw transaction from a user wallet from the frontend, or server wallet from the backend using the thirdweb API.
+
+
+For server wallets, you can execute transactions with just your project secret key.
+For user wallets in React applications that use the SDK, you can obtain the user wallet auth token (JWT) with the useAuthToken() hook.
+For user wallets in TypeScript applications, you can get it by calling wallet.getAuthToken() on a connected inAppWallet() or ecosystemWallet().
+
+
+Request: POST /v1/transactions
+Response: {"result":{"transactionIds":["string"]}}
+
+
+Going further:
+- Sponsor Gas
+- Monitor Transactions
+
+
+===================
+CONTRACTS DOCUMENTATION
+===================
+
+
+Get Started
+Read, write, and deploy smart contracts on any EVM compatible blockchain.
+
+
+Read from Contracts
+You can efficiently read data from multiple functions or contracts in a single request.
+
+
+Request: POST /v1/contracts/read
+Response: {"result":[{"success":true,"data":"value","error":"string"}]}
+
+
+Write to Contracts
+You can write multiple functions to multiple contracts on the same chain in a single request atomically, which will result in a single transaction for optimal gas efficiency.
+
+
+Request: POST /v1/contracts/write
+Response: {"result":{"transactionIds":["string"]}}
+
+
+Going further:
+- Deploy Contracts
+- Contract Events
+
+
+===================
+INSIGHT DOCUMENTATION
+===================
+
+
+Insight
+Insight is a tool that lets you retrieve blockchain data from any EVM chain, enrich it with metadata, and transform it using custom logic.
+
+
+Insight is open-source. View and contribute to its source code on GitHub.
+
+
+Features
+Easy-to-Use API: Easily understandable data API to query blockchain data.
+Managed Infrastructure: No need to index blockchains yourself or manage infrastructure and RPC costs.
+Powerful Aggregations: Perform complex data analysis with built-in aggregation functions
+Custom Blueprints: Transform and enrich data easily to suit your needs.
+Lightning-Fast Queries: Access any transaction, event or token API data
+
+
+Video Tutorials
+- Insight Introduction: Create your own custom schemas and data to get specific data.
+- Telegram Bot: Build an on-chain Telegram bot that fetches live blockchain data
+
+
+Supported Chains
+Insight is supported on select EVM compatible chains. To view the full list, visit thirdweb chainlist.
+
+
+===================
+VAULT DOCUMENTATION
+===================
+
+
+Vault
+Vault is an open-source non-custodial key management service, secured with TEE architecture (AWS Nitro Enclaves) and designed for blockchain applications.
+
+
+Features
+Non-Custodial Wallets: Generate and manage EOAs where private keys remain encrypted and secure
+Programmatic Signing: Enable applications to request signatures based on rules without exposing keys
+Sophisticated Access Models: Delegate signing capabilities with granular access controls
+Flexibility: Basic wallet functionality to multi-user organizations with complex permissioning
+
+
+With vault, you can build applications where:
+- Your users never need to manage private keys
+- Your backend services can request signatures without having access to private keys
+- Your users can create controlled access for team members, services, or automation
+- Security is enforced cryptographically, not through promises
+
+
+===================
+BLOCKCHAIN LLM DOCUMENTATION
+===================
+
+
+Blockchain LLM
+The thirdweb API exposes a standard OpenAI-compatible chat completion API that allows you to interact with the thirdweb AI model, optimized for blockchain interactions.
+
+
+Capabilities:
+- Query real-time data from the blockchain
+- Analyze transactions
+- Fetch token balances, prices and metadata
+- Execute or prepare any contract call or transaction
+- Execute or prepare swaps from/to any token pair
+- Deploy contracts
+- Generate images
+- Search the web
+- And more!
+
+
+You can use the API with the HTTP API directly, the AI SDK or with any OpenAI-compatible client library.
+
+
+Request: POST /ai/chat
+Response: {"message":"...","session_id":"123","request_id":"456","actions":[...]}
+
+
+Going further:
+- Handle streaming responses
+- Transaction Execution
+- Use the Vercel AI SDK
+- Full API Reference
+
+
+===================
+MCP SERVER DOCUMENTATION
+===================
+
+
+MCP server
+You can use the thirdweb MCP server to interact with the thirdweb API from your agents or LLM client.
+
+
+Remote MCP endpoint
+You can access the MCP server at the following url, with your project secret key.
+https://api.thirdweb.com/mcp?secretKey=<YOUR_SECRET_KEY>
+
+
+Make sure to keep your secret key safe and never share it with anyone.
+
+
+By default, all tools are available. You can filter the tools available by passing a comma-separated list of tools as a query parameter.
+https://api.thirdweb.com/mcp?secretKey=<YOUR_SECRET_KEY>&tools=fetchWithPayment,getWalletBalance
+
+
+Usage with agents
+Use your favorite agent framework to plug in the MCP server as a collection of tools for your agent.
+
+
+Example usage with langchain:
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { MultiServerMCPClient } from "@langchain/mcp-adapters";
+const mcpServers = {
+  thirdweb: {
+    url: `https://api.thirdweb.com/mcp?secretKey=<YOUR_SECRET_KEY>`,
+  },
+};
+const client = new MultiServerMCPClient(mcpServers);
+const tools = await client.getTools();
+const agent = createReactAgent({ llm: model, tools: tools });
+await agent.invoke({
+  messages: [{ role: "user", content: "create a server wallet called 'my-wallet'" }],
+});
+
+
+Usage with LLM clients
+You can also use the MCP server on your own LLM client, like cursor, claude code and more.
+
+
+Example prompts:
+- Managing server wallets: "List my server wallets", "Create a server wallet called treasury", "What's the balance of treasury wallet?"
+- Managing contracts: "List my contracts"
+- Executing transactions: "approve 100 USDC from treasury wallet to executor wallet"
+
+
+Available tools:
+intiateAuthentication, completeAuthentication, linkAuthentication, unlinkAuthentication, getMyWallet, listUserWallets, createUserWallet, listServerWallets, createServerWallet, getWalletBalance, getWalletTransactions, getWalletTokens, getWalletNFTs, signMessage, signTypedData, sendTokens, listContracts, deployContract, readContract, writeContract, getContractTransactions, getContractEvents, getContractMetadata, getContractSignatures, getTransactionById, listTransactions, sendTransactions, createPayment, paymentsPurchase, getPaymentHistory, fetchWithPayment, listPayableServices, createToken, listTokens, getTokenOwners, getBridgeChains, convertFiatToCrypto, bridgeSwap, chat
+
+
+===================
+LLMS.TXT DOCUMENTATION
+===================
+
+
+llms.txt
+Use these llms.txt files to instruct your LLM on how to use the thirdweb API.
+
+
+How to use
+Download the llms.txt file you want to use and add it to your project files or ruleset.
+Reference them in your prompts when asking to build a feature, or alternatively inject the url directly in your prompt.
+
+
+Example:
+Add a login screen that lets the user enter the email and confirm a verification code. then display their email and wallet address in the header.
+Docs: https://api.thirdweb.com/llms.txt
+
+
+thirdweb API reference
+The thirdweb HTTP API reference as markdown.
+Available at: https://api.thirdweb.com/llms.txt
+Recommended for: Web and native applications, servers, agents using the HTTP thirdweb API.
+
+
+Typescript SDK quick reference
+Contains a table of contents for the thirdweb Typescript SDK documentation.
+Available at: https://portal.thirdweb.com/llms.txt
+Recommended for: Typescript, react or react native applications that deal with external wallets and advanced blockchain features.
+
+
+Typescript SDK full documentation
+Contains the entire thirdweb Typescript SDK documentation as markdown. Requires large context windows.
+Available at: https://portal.thirdweb.com/llms-full.txt
+Recommended for: Typescript, react or react native applications that deal with external wallets and advanced blockchain features.
+
+
+
+
+END OF THIRDWEB DOCUMENTATION EXTRACT
